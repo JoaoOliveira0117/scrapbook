@@ -3,7 +3,7 @@ let messageInput = document.getElementById("messageField");
 let addScrapBtn = document.getElementById("addButton");
 let scrapsField = document.getElementById("scrapsField");
 
-let scraps = JSON.parse(localStorage.getItem("message_list")) || [];
+let scraps = [];
 
 function renderScraps() {
   scrapsField.innerHTML = "";
@@ -28,7 +28,6 @@ function addNewScrap() {
   scraps.push({ title, message });
 
   renderScraps();
-  saveInStorage();
 }
 
 function createScrapCard(title, message, position) {
@@ -49,10 +48,6 @@ function createScrapCard(title, message, position) {
 function removeScrapCard(index){
     let scrapcard = document.getElementById(`card${index}`);
     scrapcard.remove();
-}
-
-function saveInStorage(){
-    localStorage.setItem('message_list', JSON.stringify(scraps));
 }
 
 renderScraps();
