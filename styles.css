@@ -8,6 +8,17 @@ textarea {
     border: none;
 }
 
+.cartinho {
+    display: inline;
+}
+
+.removeButton {
+    width: 16px;
+    position: absolute;
+    top: 18px;
+    right: 18px;
+}
+
 ::-webkit-scrollbar {
     width: 12px;
 }
