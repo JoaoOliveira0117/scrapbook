@@ -52,10 +52,16 @@ function createScrapCard(title, message, position) {
 }
 
 function openEditModal(position) {
-  $("#editModal").modal("toggle");
-
   document.getElementById("editMessageTitle").value = document.getElementById(`titulo${position}`).innerHTML;
   document.getElementById("editMessageBody").value = document.getElementById(`mensagem${position}`).innerHTML;
+
+  $("#editModal").modal("toggle");
+  $("#save").click(function(){
+    document.getElementById(`titulo${position}`).innerHTML = document.getElementById("editMessageTitle").value;
+    document.getElementById(`mensagem${position}`).innerHTML = document.getElementById("editMessageBody").value;
+
+    $("#editModal").modal("hide");
+  });
 }
 
 renderScraps();
