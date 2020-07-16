@@ -1,0 +1,8 @@
+{
+  "name": "scrapbook-es6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JoaoOliveira0117/scrapbook",
+  "author": "joao.oliveira0117@hotmail.com <joao.oliveira0117@hotmail.com>",
+  "license": "MIT"
+}
