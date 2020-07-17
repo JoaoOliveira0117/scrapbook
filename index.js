@@ -44,8 +44,8 @@ function createScrapCard(title, message, position) {
       <p class="card-text" id="mensagem${position}">${message}</p>
     </div>
     <div class="w-100 d-flex justify-content-end pr-2 pb-2">
-      <button class="btn btn-danger mr-1" onclick="deleteScrap(${position})">Deletar</button>
-      <button class="btn btn-info" onclick="openEditModal(${position})">Editar</button>
+      <button class="btn btn-danger mr-1">Deletar</button>
+      <button class="btn btn-info">Editar</button>
     </div>
   </div>
   `;
