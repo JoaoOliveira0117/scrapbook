@@ -20,23 +20,50 @@ var TaskList = /*#__PURE__*/function () {
     this.messageInput = document.getElementById("messageBody");
     this.addScrapBtn = document.getElementById("addButton");
     this.scrapsField = document.getElementById("scrapsField");
+    this.editTitleInput = document.getElementById("editMessageTitle");
+    this.editMessageInput = document.getElementById("editMessageBody");
     this.scraps = [];
     this.registerAddScrapBtnEvent();
   }
 
   _createClass(TaskList, [{
+    key: "generateScrapID",
+    value: function generateScrapID() {
+      return this.scraps.length + 1; //pega a quantidade de scraps que a variavael possui e soma mais 1 pra gerar um numero
+    }
+  }, {
     key: "registerAddScrapBtnEvent",
     value: function registerAddScrapBtnEvent() {
       var _this = this;
 
       this.addScrapBtn.onclick = function () {
         return _this.addNewScrap();
-      };
+      }; //onclick realiza a função =>
+
+    }
+  }, {
+    key: "setButtonEvents",
+    value: function setButtonEvents() {
+      var _this2 = this;
+
+      document.querySelectorAll(".delete-button").forEach(function (item) {
+        //executa a função (item) em cada elemento
+        item.onclick = function (event) {
+          return _this2.deleteScrap(event);
+        }; //o item clicado gera um evento, a função deleta quando detectar o evento.
+
+      });
+      document.querySelectorAll(".edit-scrap").forEach(function (item) {
+        item.onclick = function (event) {
+          return _this2.openEditModal(event);
+        };
+      });
     }
   }, {
     key: "renderScraps",
     value: function renderScraps() {
-      this.scrapsField.innerHTML = "";
+      //RENDERIZA O SCRAP
+      this.scrapsField.innerHTML = ""; //deixa o campo em branco
 
       var _iterator = _createForOfIteratorHelper(this.scraps),
           _step;
@@ -44,31 +71,94 @@ var TaskList = /*#__PURE__*/function () {
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var scrap = _step.value;
-          this.scrapsField.innerHTML += this.createScrapCard(scrap.title, scrap.message);
+          //pra cada scrap de scraps da classe
+          var cardHtml = this.createScrapCard(scrap.id, scrap.title, scrap.message); //armazena o card do scrapbook
+
+          this.insertHTML(cardHtml); //insere o card
         }
       } catch (err) {
         _iterator.e(err);
       } finally {
         _iterator.f();
       }
+
+      this.setButtonEvents(); //adiciona a função acima ao card
     }
   }, {
     key: "addNewScrap",
     value: function addNewScrap() {
-      var title = this.titleInput.value;
-      var message = this.messageInput.value;
-      this.titleInput.value = "";
-      this.messageInput.value = "";
+      var id = this.generateScrapID(); //gera o id lá de cima
+
+      var title = this.titleInput.value; //pega o valor do titulo ao clicar no botão
+
+      var message = this.messageInput.value; // pega o valor da mensagem ao clicar no botão
+
+      this.titleInput.value = ""; //deixa o valor em branco
+
+      this.messageInput.value = ""; // ||
+
       this.scraps.push({
+        id: id,
         title: title,
         message: message
+      }); //adiciona os valores no array scraps
+
+      this.renderScraps(); //renderiza
+    }
+  }, {
+    key: "deleteScrap",
+    value: function deleteScrap(event) {
+      //deleta o scrap que recebeu o evento
+      event.path[2].remove(); //pedir explicação dos paths pro professor(embora tu ja saiba um pouco) - remove.
+
+      var scrapId = event.path[2].getAttribute("id-scrap"); //scrapID recebe o ID do scrap
+
+      var scrapIndex = this.scraps.findIndex(function (item) {
+        //encontrar o indice
+        return item.id == scrapId;
       });
+      this.scraps.splice(scrapIndex, 1); //deleta o scrap do array também
+    }
+  }, {
+    key: "openEditModal",
+    value: function openEditModal(event) {
+      var _this3 = this;
+
+      $("#editModal").modal("toggle");
+      var scrapId = event.path[2].getAttribute("id-scrap");
+      var scrapIndex = this.scraps.findIndex(function (item) {
+        //encontrar o indice
+        return item.id == scrapId;
+      });
+      this.editTitleInput.value = this.scraps[scrapIndex].title;
+      this.editMessageInput.value = this.scraps[scrapIndex].message;
+
+      document.getElementById("save").onclick = function () {
+        return _this3.saveChanges(scrapIndex);
+      };
+    }
+  }, {
+    key: "saveChanges",
+    value: function saveChanges(position) {
+      var title = this.editTitleInput.value;
+      var message = this.editMessageInput.value;
+      this.scraps[position] = {
+        position: position,
+        title: title,
+        message: message
+      };
       this.renderScraps();
+      $("#editModal").modal("hide");
+    }
+  }, {
+    key: "insertHTML",
+    value: function insertHTML(html) {
+      this.scrapsField.innerHTML += html; //insere o card no HTML
     }
   }, {
     key: "createScrapCard",
-    value: function createScrapCard(title, message) {
-      return "\n        <div class=\"message-cards card text-white bg-dark m-2 col-3\">\n            <div class=\"card-header font-weight-bold\" id=\"titulo\">".concat(title, "</div>\n            <div class=\"card-body\">\n                <p class=\"card-text\" id=\"mensagem\">").concat(message, "</p>\n            </div>\n            <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n                <button class=\"btn btn-danger mr-1\">Deletar</button>\n                <button class=\"btn btn-info\">Editar</button>\n            </div>\n        </div>\n        ");
+    value: function createScrapCard(id, title, message) {
+      return "\n        <div class=\"message-cards card text-white bg-dark m-2 col-3\" id-scrap=\"".concat(id, "\">\n            <div class=\"card-header font-weight-bold\" id=\"titulo\">").concat(title, "</div>\n            <div class=\"card-body\">\n                <p class=\"card-text\" id=\"mensagem\">").concat(message, "</p>\n            </div>\n            <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n                <button class=\"btn btn-danger mr-1 delete-button\">Deletar</button>\n                <button class=\"btn btn-info edit-scrap\">Editar</button>\n            </div>\n        </div>\n        ");
     }
   }]);
 
