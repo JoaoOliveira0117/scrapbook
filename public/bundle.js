@@ -1,168 +1,113 @@
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
 "use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _soma__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./soma */ \"./src/soma.js\");\n// class TaskList {\n//     constructor(){\n//         this.titleInput = document.getElementById(\"messageTitle\");\n//         this.messageInput = document.getElementById(\"messageBody\");\n//         this.addScrapBtn = document.getElementById(\"addButton\");\n//         this.scrapsField = document.getElementById(\"scrapsField\");\n//         this.editTitleInput = document.getElementById(\"editMessageTitle\");\n//         this.editMessageInput = document.getElementById(\"editMessageBody\");\n//         this.scraps = [];\n//         this.registerAddScrapBtnEvent();\n//     }\n//     generateScrapID(){\n//         return this.scraps.length + 1; //pega a quantidade de scraps que a variavael possui e soma mais 1 pra gerar um numero\n//     }\n//     registerAddScrapBtnEvent(){\n//         this.addScrapBtn.onclick = () => this.addNewScrap(); //onclick realiza a função =>\n//     }\n//     setButtonEvents(){\n//         document.querySelectorAll(\".delete-button\").forEach((item) => { //executa a função (item) em cada elemento\n//             item.onclick = (event) => this.deleteScrap(event); //o item clicado gera um evento, a função deleta quando detectar o evento.\n//         });\n//         document.querySelectorAll(\".edit-scrap\").forEach((item) => {\n//             item.onclick = (event) => this.openEditModal(event);\n//         })\n//     }\n//     renderScraps() { //RENDERIZA O SCRAP\n//         this.scrapsField.innerHTML = \"\"; //deixa o campo em branco\n//         for (const scrap of this.scraps) { //pra cada scrap de scraps da classe\n//             const cardHtml = this.createScrapCard(scrap.id,scrap.title,scrap.message); //armazena o card do scrapbook\n//             this.insertHTML(cardHtml);//insere o card\n//         }\n//         this.setButtonEvents(); //adiciona a função acima ao card\n//     }\n//     addNewScrap(){\n//         const id = this.generateScrapID(); //gera o id lá de cima\n//         const title = this.titleInput.value; //pega o valor do titulo ao clicar no botão\n//         const message = this.messageInput.value; // pega o valor da mensagem ao clicar no botão\n//         this.titleInput.value = \"\"; //deixa o valor em branco\n//         this.messageInput.value = \"\"; // ||\n//         this.scraps.push({ id,title,message}); //adiciona os valores no array scraps\n//         this.renderScraps(); //renderiza\n//     }\n//     deleteScrap(event){ //deleta o scrap que recebeu o evento\n//         event.path[2].remove(); //pedir explicação dos paths pro professor(embora tu ja saiba um pouco) - remove.\n//         const scrapId = event.path[2].getAttribute(\"id-scrap\"); //scrapID recebe o ID do scrap\n//         const scrapIndex = this.scraps.findIndex(item => { //encontrar o indice\n//             return item.id == scrapId;\n//         });\n//         this.scraps.splice(scrapIndex, 1); //deleta o scrap do array também\n//     }\n//     openEditModal(event){\n//         $(\"#editModal\").modal(\"toggle\");\n//         const scrapId = event.path[2].getAttribute(\"id-scrap\");\n//         const scrapIndex = this.scraps.findIndex(item => { //encontrar o indice\n//             return item.id == scrapId;\n//         });\n//         this.editTitleInput.value = this.scraps[scrapIndex].title;\n//         this.editMessageInput.value = this.scraps[scrapIndex].message;\n//         document.getElementById(\"save\").onclick = () => this.saveChanges(scrapIndex);\n//     }\n//     saveChanges(position){\n//         let title = this.editTitleInput.value;\n//         let message = this.editMessageInput.value\n//         this.scraps[position] = {position,title, message};\n//         this.renderScraps();\n//         $(\"#editModal\").modal(\"hide\");\n//     }\n//     insertHTML(html){\n//         this.scrapsField.innerHTML+= html; //insere o card no HTML\n//     }\n//     createScrapCard(id,title,message){\n//         return `\n//         <div class=\"message-cards card text-white bg-dark m-2 col-3\" id-scrap=\"${id}\">\n//             <div class=\"card-header font-weight-bold\" id=\"titulo\">${title}</div>\n//             <div class=\"card-body\">\n//                 <p class=\"card-text\" id=\"mensagem\">${message}</p>\n//             </div>\n//             <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n//                 <button class=\"btn btn-danger mr-1 delete-button\">Deletar</button>\n//                 <button class=\"btn btn-info edit-scrap\">Editar</button>\n//             </div>\n//         </div>\n//         `;\n//     }\n// }\n// new TaskList();");
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+/***/ }),
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+/***/ "./src/soma.js":
+/*!*********************!*\
+  !*** ./src/soma.js ***!
+  \*********************/
+/*! exports provided: soma */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"soma\", function() { return soma; });\nvar soma = function soma(a, b) {\n  return a + b;\n};\n\n//# sourceURL=webpack:///./src/soma.js?");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/***/ })
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var TaskList = /*#__PURE__*/function () {
-  function TaskList() {
-    _classCallCheck(this, TaskList);
-
-    this.titleInput = document.getElementById("messageTitle");
-    this.messageInput = document.getElementById("messageBody");
-    this.addScrapBtn = document.getElementById("addButton");
-    this.scrapsField = document.getElementById("scrapsField");
-    this.editTitleInput = document.getElementById("editMessageTitle");
-    this.editMessageInput = document.getElementById("editMessageBody");
-    this.scraps = [];
-    this.registerAddScrapBtnEvent();
-  }
-
-  _createClass(TaskList, [{
-    key: "generateScrapID",
-    value: function generateScrapID() {
-      return this.scraps.length + 1; //pega a quantidade de scraps que a variavael possui e soma mais 1 pra gerar um numero
-    }
-  }, {
-    key: "registerAddScrapBtnEvent",
-    value: function registerAddScrapBtnEvent() {
-      var _this = this;
-
-      this.addScrapBtn.onclick = function () {
-        return _this.addNewScrap();
-      }; //onclick realiza a função =>
-
-    }
-  }, {
-    key: "setButtonEvents",
-    value: function setButtonEvents() {
-      var _this2 = this;
-
-      document.querySelectorAll(".delete-button").forEach(function (item) {
-        //executa a função (item) em cada elemento
-        item.onclick = function (event) {
-          return _this2.deleteScrap(event);
-        }; //o item clicado gera um evento, a função deleta quando detectar o evento.
-
-      });
-      document.querySelectorAll(".edit-scrap").forEach(function (item) {
-        item.onclick = function (event) {
-          return _this2.openEditModal(event);
-        };
-      });
-    }
-  }, {
-    key: "renderScraps",
-    value: function renderScraps() {
-      //RENDERIZA O SCRAP
-      this.scrapsField.innerHTML = ""; //deixa o campo em branco
-
-      var _iterator = _createForOfIteratorHelper(this.scraps),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var scrap = _step.value;
-          //pra cada scrap de scraps da classe
-          var cardHtml = this.createScrapCard(scrap.id, scrap.title, scrap.message); //armazena o card do scrapbook
-
-          this.insertHTML(cardHtml); //insere o card
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-
-      this.setButtonEvents(); //adiciona a função acima ao card
-    }
-  }, {
-    key: "addNewScrap",
-    value: function addNewScrap() {
-      var id = this.generateScrapID(); //gera o id lá de cima
-
-      var title = this.titleInput.value; //pega o valor do titulo ao clicar no botão
-
-      var message = this.messageInput.value; // pega o valor da mensagem ao clicar no botão
-
-      this.titleInput.value = ""; //deixa o valor em branco
-
-      this.messageInput.value = ""; // ||
-
-      this.scraps.push({
-        id: id,
-        title: title,
-        message: message
-      }); //adiciona os valores no array scraps
-
-      this.renderScraps(); //renderiza
-    }
-  }, {
-    key: "deleteScrap",
-    value: function deleteScrap(event) {
-      //deleta o scrap que recebeu o evento
-      event.path[2].remove(); //pedir explicação dos paths pro professor(embora tu ja saiba um pouco) - remove.
-
-      var scrapId = event.path[2].getAttribute("id-scrap"); //scrapID recebe o ID do scrap
-
-      var scrapIndex = this.scraps.findIndex(function (item) {
-        //encontrar o indice
-        return item.id == scrapId;
-      });
-      this.scraps.splice(scrapIndex, 1); //deleta o scrap do array também
-    }
-  }, {
-    key: "openEditModal",
-    value: function openEditModal(event) {
-      var _this3 = this;
-
-      $("#editModal").modal("toggle");
-      var scrapId = event.path[2].getAttribute("id-scrap");
-      var scrapIndex = this.scraps.findIndex(function (item) {
-        //encontrar o indice
-        return item.id == scrapId;
-      });
-      this.editTitleInput.value = this.scraps[scrapIndex].title;
-      this.editMessageInput.value = this.scraps[scrapIndex].message;
-
-      document.getElementById("save").onclick = function () {
-        return _this3.saveChanges(scrapIndex);
-      };
-    }
-  }, {
-    key: "saveChanges",
-    value: function saveChanges(position) {
-      var title = this.editTitleInput.value;
-      var message = this.editMessageInput.value;
-      this.scraps[position] = {
-        position: position,
-        title: title,
-        message: message
-      };
-      this.renderScraps();
-      $("#editModal").modal("hide");
-    }
-  }, {
-    key: "insertHTML",
-    value: function insertHTML(html) {
-      this.scrapsField.innerHTML += html; //insere o card no HTML
-    }
-  }, {
-    key: "createScrapCard",
-    value: function createScrapCard(id, title, message) {
-      return "\n        <div class=\"message-cards card text-white bg-dark m-2 col-3\" id-scrap=\"".concat(id, "\">\n            <div class=\"card-header font-weight-bold\" id=\"titulo\">").concat(title, "</div>\n            <div class=\"card-body\">\n                <p class=\"card-text\" id=\"mensagem\">").concat(message, "</p>\n            </div>\n            <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n                <button class=\"btn btn-danger mr-1 delete-button\">Deletar</button>\n                <button class=\"btn btn-info edit-scrap\">Editar</button>\n            </div>\n        </div>\n        ");
-    }
-  }]);
-
-  return TaskList;
-}();
-
-new TaskList();
+/******/ });

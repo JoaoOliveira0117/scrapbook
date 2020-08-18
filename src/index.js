@@ -1,3 +1,13 @@
+import api from './services/api';
+
+async function teste(){
+    const response = await api.get("/scraps");
+
+    console.log(response);
+}
+
+teste();
+
 class TaskList {
     constructor(){
         this.titleInput = document.getElementById("messageTitle");
@@ -9,11 +19,16 @@ class TaskList {
         this.editMessageInput = document.getElementById("editMessageBody");
         this.scraps = [];
 
+        this.getScraps();
+
         this.registerAddScrapBtnEvent();
     }
 
-    generateScrapID(){
-        return this.scraps.length + 1; //pega a quantidade de scraps que a variavael possui e soma mais 1 pra gerar um numero
+    async getScraps(){
+        const {data: scraps} = await api.get('/scraps');
+
+        this.scraps = scraps;
+        this.renderScraps();
     }
 
     registerAddScrapBtnEvent(){
@@ -40,27 +55,33 @@ class TaskList {
         }
 
         this.setButtonEvents(); //adiciona a função acima ao card
+        console.log(this.scraps);
     }
 
-    addNewScrap(){
-        const id = this.generateScrapID(); //gera o id lá de cima
-        const title = this.titleInput.value; //pega o valor do titulo ao clicar no botão
-        const message = this.messageInput.value; // pega o valor da mensagem ao clicar no botão
+    async addNewScrap(){
+        const newTitle = this.titleInput.value; //pega o valor do titulo ao clicar no botão
+        const newMessage = this.messageInput.value; // pega o valor da mensagem ao clicar no botão
 
         this.titleInput.value = ""; //deixa o valor em branco
         this.messageInput.value = ""; // ||
+
+        const {data: {id,title,message}} = await api.post('/scraps',{title: newTitle, message: newMessage});
+
+        this.scraps.push({id, title, message});
 
         this.scraps.push({ id,title,message}); //adiciona os valores no array scraps
         this.renderScraps(); //renderiza
     }
 
-    deleteScrap(event){ //deleta o scrap que recebeu o evento
-        event.path[2].remove(); //pedir explicação dos paths pro professor(embora tu ja saiba um pouco) - remove.
+    async deleteScrap(event){ //deleta o scrap que recebeu o evento
+        event.path[2].remove(); 
 
         const scrapId = event.path[2].getAttribute("id-scrap"); //scrapID recebe o ID do scrap
         const scrapIndex = this.scraps.findIndex(item => { //encontrar o indice
             return item.id == scrapId;
         });
+
+        await api.delete(`/scraps/${scrapId}`);
 
         this.scraps.splice(scrapIndex, 1); //deleta o scrap do array também
     }
@@ -79,11 +100,13 @@ class TaskList {
         document.getElementById("save").onclick = () => this.saveChanges(scrapIndex);
     }
 
-    saveChanges(position){
-        let title = this.editTitleInput.value;
-        let message = this.editMessageInput.value
+    async saveChanges(position){
+        let newTitle = this.editTitleInput.value;
+        let newMessage = this.editMessageInput.value
 
-        this.scraps[position] = {position,title, message};
+        await api.put(`/scraps/`,{title: newTitle, message: newMessage});
+
+        this.scraps[position] = {position,newTitle, newMessage};
         this.renderScraps();
         $("#editModal").modal("hide");
     }
