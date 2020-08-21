@@ -1,0 +1,25 @@
+{
+  "name": "scrapbook-es6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JoaoOliveira0117/scrapbook",
+  "author": "joao.oliveira0117@hotmail.com <joao.oliveira0117@hotmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --mode development"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "axios": "^0.19.2",
+    "babel-loader": "^8.1.0",
+    "dotenv-webpack": "^2.0.0"
+  }
+}
