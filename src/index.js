@@ -1,13 +1,4 @@
 import api from './services/api';
-
-async function teste(){
-    const response = await api.get("/scraps");
-
-    console.log(response);
-}
-
-teste();
-
 class TaskList {
     constructor(){
         this.titleInput = document.getElementById("messageTitle");
@@ -67,23 +58,26 @@ class TaskList {
 
         const {data: {id,title,message}} = await api.post('/scraps',{title: newTitle, message: newMessage});
 
-        this.scraps.push({id, title, message});
-
         this.scraps.push({ id,title,message}); //adiciona os valores no array scraps
         this.renderScraps(); //renderiza
     }
 
     async deleteScrap(event){ //deleta o scrap que recebeu o evento
-        event.path[2].remove(); 
+        try {
+            event.path[2].remove(); 
 
-        const scrapId = event.path[2].getAttribute("id-scrap"); //scrapID recebe o ID do scrap
-        const scrapIndex = this.scraps.findIndex(item => { //encontrar o indice
-            return item.id == scrapId;
-        });
+            const scrapId = event.path[2].getAttribute("id-scrap"); //scrapID recebe o ID do scrap
 
-        await api.delete(`/scraps/${scrapId}`);
+            await api.delete(`/scraps/${scrapId}`);
 
-        this.scraps.splice(scrapIndex, 1); //deleta o scrap do array também
+            const scrapIndex = this.scraps.findIndex(item => { //encontrar o indice
+                return item.id == scrapId;
+            });
+
+            this.scraps.splice(scrapIndex, 1); //deleta o scrap do array também
+        } catch (error){
+            console.log(error);
+        }
     }
 
     openEditModal(event){
@@ -97,18 +91,23 @@ class TaskList {
         this.editTitleInput.value = this.scraps[scrapIndex].title;
         this.editMessageInput.value = this.scraps[scrapIndex].message;
         
-        document.getElementById("save").onclick = () => this.saveChanges(scrapIndex);
+        document.getElementById("save").onclick = () => this.saveChanges(scrapId,scrapIndex);
     }
 
-    async saveChanges(position){
-        let newTitle = this.editTitleInput.value;
-        let newMessage = this.editMessageInput.value
+    async saveChanges(scrapId,scrapIndex){
+        try {
+            this.scraps[scrapIndex].id = scrapId;
+            this.scraps[scrapIndex].title = this.editTitleInput.value;
+            this.scraps[scrapIndex].message = this.editMessageInput.value
 
-        await api.put(`/scraps/`,{title: newTitle, message: newMessage});
+            await api.put(`/scraps/${scrapId}`,{title: this.editTitleInput.value, message: this.editMessageInput.value});
 
-        this.scraps[position] = {position,newTitle, newMessage};
         this.renderScraps();
         $("#editModal").modal("hide");
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     insertHTML(html){
